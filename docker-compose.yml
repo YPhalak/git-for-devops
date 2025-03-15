@@ -1,0 +1,41 @@
+version: '3.9'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: MySQL
+    restart: unless-stopped
+    ports:
+      - "3306:3306"
+    volumes:
+      - "$PWD/mysql_data:/var/lib/mysql"
+    networks:
+      - net
+    environment:
+      MYSQL_ROOT_PASSWORD: Test#123
+      MYSQL_USER: test
+      MYSQL_DATABASE: testdb
+      MYSQL_PASSWORD: Test@123
+
+  jenkins:
+    image: jenkins/jenkins
+    container_name: jenkins
+    restart: always
+    ports:
+      - "8080:8080"
+    volumes:
+      - "$PWD/jenkins_home:/var/jenkins_home"
+    networks:
+      - net
+  nginx:
+    image: nginx:latest
+    container_name: Nginx
+    ports:
+      - "80:80"
+    
+volumes:
+  mysql_data:
+  jenkins_data:
+
+networks:
+  net:
